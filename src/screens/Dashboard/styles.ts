@@ -38,9 +38,11 @@ export const Photo = styled.Image`
 
     border-radius: 10px;
 `;
+
 export const User = styled.View`
     margin-left: 17px;
 `;
+
 export const UserGreeting = styled.Text`
     color: ${({theme}) => theme.colors.shape};
 
@@ -57,5 +59,13 @@ export const UserName= styled.Text`
 export const IconPower = styled(Feather)`
     color: ${({theme}) => theme.colors.secondary };
     font-size: ${RFValue(24)}px;
+
+`;
+
+export const HighlightCards = styled.ScrollView.attrs({
+    horizontal: true,
+    showsHorizontalScrollIndicator: false,
+    contentContainerStyle: { paddingLeft: 24 },
+})`
 
 `;

@@ -1,4 +1,5 @@
 import React from 'react';
+import HighlightCard from '../../components/HighlightCard';
 
 
 import {
@@ -11,6 +12,7 @@ import {
     UserGreeting,
     UserName,
     IconPower,
+    HighlightCards,
 } from './styles'
 
 const Dashboard = () => {
@@ -27,11 +29,16 @@ const Dashboard = () => {
                         <UserName>Ismael Cardoso</UserName>
                     </User>
                 </UserInfo>
-                
+
                 <IconPower name='power'/>
             </UserWrapper>
 
         </Header>
+        <HighlightCards>
+            <HighlightCard />
+            <HighlightCard />
+            <HighlightCard />
+        </HighlightCards>
     </Container>
     );
 }
