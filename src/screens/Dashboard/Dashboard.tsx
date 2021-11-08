@@ -1,11 +1,34 @@
 import React from 'react';
+import {Text, View} from 'react-native'
 
-import {Container, Title} from './styles'
+import {
+    Container,
+    Header,
+    UserWrapper,
+    UserInfo,
+    Photo,
+    User,
+    UserGreeting,
+    UserName,
+
+} from './styles'
 
 const Dashboard = () => {
     return (
     <Container>
-        <Title>Dashboards</Title>
+        <Header>
+            <UserWrapper>
+                <UserInfo>
+                    <Photo 
+                    source={{ uri: 'https://avatars.githubusercontent.com/u/51178683?v=4'}}
+                    />
+                    <User>
+                        <UserGreeting>Olá</UserGreeting>
+                        <UserName>Ismael Cardoso</UserName>
+                    </User>
+                </UserInfo>
+            </UserWrapper>
+        </Header>
     </Container>
     );
 }
