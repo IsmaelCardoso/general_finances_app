@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native'
+
 
 import {
     Container,
@@ -10,7 +10,7 @@ import {
     User,
     UserGreeting,
     UserName,
-
+    IconPower,
 } from './styles'
 
 const Dashboard = () => {
@@ -27,7 +27,10 @@ const Dashboard = () => {
                         <UserName>Ismael Cardoso</UserName>
                     </User>
                 </UserInfo>
+                
+                <IconPower name='power'/>
             </UserWrapper>
+
         </Header>
     </Container>
     );
