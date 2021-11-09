@@ -1,10 +1,17 @@
 import React from 'react';
-import Header from '../../components/Header'
 import HighlightCard from '../../components/HighlightCard';
 import TransactionCard, { TrasactionCardProps } from '../../components/Transactions/TransactionCard';
 
 import {
     Container,
+    Header,
+    UserWrapper,
+    UserInfo,
+    Photo,
+    User,
+    UserGreeting,
+    UserName,
+    IconPower,
     HighlightCards,
     Transactions,
     Title,
@@ -53,7 +60,22 @@ const data: DataListProps[] = [
 const Dashboard = () => {
     return (
     <Container>
-        <Header />
+        <Header>
+            <UserWrapper>
+                <UserInfo>
+                    <Photo 
+                    source={{ uri: 'https://avatars.githubusercontent.com/u/51178683?v=4'}}
+                    />
+                    <User>
+                        <UserGreeting>Olá</UserGreeting>
+                        <UserName>Ismael Cardoso</UserName>
+                    </User>
+                </UserInfo>
+
+                <IconPower name='power'/>
+            </UserWrapper>
+        </Header>
+        
         <HighlightCards>
             <HighlightCard 
             type="up"
