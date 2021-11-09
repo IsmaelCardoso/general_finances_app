@@ -1,39 +1,20 @@
 import React from 'react';
+import Header from '../../components/Header'
 import HighlightCard from '../../components/HighlightCard';
+import TransactionCard from '../../components/Transactions/TransactionCard';
 
 
 import {
     Container,
-    Header,
-    UserWrapper,
-    UserInfo,
-    Photo,
-    User,
-    UserGreeting,
-    UserName,
-    IconPower,
     HighlightCards,
+    Transactions,
+    Title,
 } from './styles'
 
 const Dashboard = () => {
     return (
     <Container>
-        <Header>
-            <UserWrapper>
-                <UserInfo>
-                    <Photo 
-                    source={{ uri: 'https://avatars.githubusercontent.com/u/51178683?v=4'}}
-                    />
-                    <User>
-                        <UserGreeting>Olá</UserGreeting>
-                        <UserName>Ismael Cardoso</UserName>
-                    </User>
-                </UserInfo>
-
-                <IconPower name='power'/>
-            </UserWrapper>
-
-        </Header>
+        <Header />
         <HighlightCards>
             <HighlightCard 
             type="up"
@@ -54,6 +35,10 @@ const Dashboard = () => {
             lastTransaction="01 à 16 de abril" 
             />
         </HighlightCards>
+        <Transactions>
+            <Title>Listagem</Title>
+            <TransactionCard />
+        </Transactions>
     </Container>
     );
 }
