@@ -1,9 +1,7 @@
 import React from 'react';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
 import Header from '../../components/Header'
 import HighlightCard from '../../components/HighlightCard';
-import TransactionCard from '../../components/Transactions/TransactionCard';
-
+import TransactionCard, { TrasactionCardProps } from '../../components/Transactions/TransactionCard';
 
 import {
     Container,
@@ -11,10 +9,15 @@ import {
     Transactions,
     Title,
     TransactionList,
-} from './styles'
+} from './styles';
 
-const data = [
+export interface DataListProps extends TrasactionCardProps {
+    id: string;
+};
+
+const data: DataListProps[] = [
     {
+        id: '1',
         type: 'positive',
         title:'Desenvolvimento de site',
         amount: 'R$ 12.000,00',
@@ -25,6 +28,7 @@ const data = [
         date: '13/04/2020',
     },
     {
+        id: '2',
         type: 'negative',
         title:'Hamburgueria Pizzy',
         amount: 'R$ 59,00',
@@ -35,6 +39,7 @@ const data = [
         date: '10/04/2020',
     },
     {
+        id: '3',
         type: 'negative',
         title:'Aluguel do apartamento',
         amount: 'R$ 1.200,00',
@@ -45,7 +50,6 @@ const data = [
         date: '15/04/2020',
     },
 ]
-
 const Dashboard = () => {
     return (
     <Container>
@@ -75,11 +79,8 @@ const Dashboard = () => {
             <Title>Listagem</Title>
             <TransactionList 
                 data={data}
+                keyExtractor={item => item.id}
                 renderItem={({ item }) => <TransactionCard data={item} />}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingBottom: getBottomSpace()
-                }}
             />
         </Transactions>
 
