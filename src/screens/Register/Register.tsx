@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
+
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useForm } from "react-hook-form";
 
 import InputForm from "../../components/Form/InputForm";
@@ -7,9 +12,6 @@ import TransactionTypeButton from "../../components/Form/TransactionTypeButton";
 import Button from "../../components/Form/Button";
 import CategorySelectButton from "../../components/Form/CategorySelectButton";
 import CategorySelect from "../CategorySelect";
-
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   Container,
@@ -34,6 +36,8 @@ const schema = Yup.object().shape({
 });
 
 const Register = () => {
+  const dataKey = "@generalfinance:transactions";
+
   const [category, setCategory] = useState({
     key: "category",
     name: "Category",
@@ -55,7 +59,7 @@ const Register = () => {
     setCategoryModalOpen((state) => !state);
   };
 
-  const handlerRegister = (form: FormData) => {
+  const handlerRegister = async (form: FormData) => {
     if (!transactionTypeSelection) {
       return Alert.alert("Selecione o tipo da transação");
     }
@@ -65,15 +69,40 @@ const Register = () => {
     }
 
     const { name, amount } = form;
-    const data = {
+    const newTrasaction = {
       name,
       amount,
       transactionTypeSelection,
       category: category.key,
     };
 
-    console.log(data);
+    try {
+      const data = await AsyncStorage.getItem(dataKey);
+      const currentData = data ? JSON.parse(data) : [];
+      const dataFormatted = [...currentData, newTrasaction];
+
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
+    } catch (error) {
+      console.log("Error: ", error);
+
+      Alert.alert("Não foi possivel salvar");
+    }
   };
+
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await AsyncStorage.getItem(dataKey);
+      console.log(JSON.parse(data!));
+    };
+
+    loadData();
+
+    // const removeAll = async () => {
+    //   await AsyncStorage.removeItem(dataKey);
+    // };
+
+    // removeAll();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
