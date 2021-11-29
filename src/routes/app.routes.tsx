@@ -8,6 +8,7 @@ import { useTheme } from "styled-components";
 
 import Dashboard from "../screens/Dashboard";
 import Register from "../screens/Register";
+import Resume from "../screens/Resume";
 import { reloadAsync } from "expo-updates";
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -52,7 +53,7 @@ const AppRoutes = () => {
       />
       <Screen
         name="Resumo"
-        component={Register}
+        component={Resume}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="pie-chart" size={size} color={color} />
