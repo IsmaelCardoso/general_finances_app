@@ -56,7 +56,7 @@ const Register = () => {
 
   const navigation = useNavigation();
 
-  const handleTransactionTypeSelection = (type: "up" | "down") => {
+  const handleTransactionTypeSelection = (type: "positive" | "negative") => {
     setTransactionTypeSelection(type);
   };
 
@@ -78,7 +78,7 @@ const Register = () => {
       id: String(uuid.v4()),
       name,
       amount,
-      transactionTypeSelection,
+      type: transactionTypeSelection,
       category: category.key,
       date: new Date(),
     };
@@ -150,15 +150,15 @@ const Register = () => {
               <TransactionTypeButton
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionTypeSelection("up")}
-                isActive={transactionTypeSelection === "up"}
+                onPress={() => handleTransactionTypeSelection("positive")}
+                isActive={transactionTypeSelection === "positive"}
               />
 
               <TransactionTypeButton
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionTypeSelection("down")}
-                isActive={transactionTypeSelection === "down"}
+                onPress={() => handleTransactionTypeSelection("negative")}
+                isActive={transactionTypeSelection === "negative"}
               />
             </TransactionTypes>
 
