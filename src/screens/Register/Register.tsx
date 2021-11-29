@@ -4,8 +4,10 @@ import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from "react-native-uuid";
 
 import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
 
 import InputForm from "../../components/Form/InputForm";
 import TransactionTypeButton from "../../components/Form/TransactionTypeButton";
@@ -49,7 +51,10 @@ const Register = () => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ resolver: yupResolver(schema) });
+
+  const navigation = useNavigation();
 
   const handleTransactionTypeSelection = (type: "up" | "down") => {
     setTransactionTypeSelection(type);
@@ -70,18 +75,29 @@ const Register = () => {
 
     const { name, amount } = form;
     const newTrasaction = {
+      id: String(uuid.v4()),
       name,
       amount,
       transactionTypeSelection,
       category: category.key,
+      date: new Date(),
     };
 
     try {
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
-      const dataFormatted = [...currentData, newTrasaction];
+      const dataFormatted = [newTrasaction, ...currentData];
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
+
+      reset();
+      setTransactionTypeSelection("");
+      setCategory({
+        key: "category",
+        name: "Category",
+      });
+
+      navigation.navigate("Listagem");
     } catch (error) {
       console.log("Error: ", error);
 

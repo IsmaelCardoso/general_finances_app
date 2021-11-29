@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import HighlightCard from "../../components/HighlightCard";
 import TransactionCard, {
   TrasactionCardProps,
@@ -25,42 +26,47 @@ export interface DataListProps extends TrasactionCardProps {
   id: string;
 }
 
-const data: DataListProps[] = [
-  {
-    id: "1",
-    type: "positive",
-    title: "Desenvolvimento de site",
-    amount: "R$ 12.000,00",
-    category: {
-      name: "Vendas",
-      icon: "dollar-sign",
-    },
-    date: "13/04/2020",
-  },
-  {
-    id: "2",
-    type: "negative",
-    title: "Hamburgueria Pizzy",
-    amount: "R$ 59,00",
-    category: {
-      name: "Alimentação",
-      icon: "coffee",
-    },
-    date: "10/04/2020",
-  },
-  {
-    id: "3",
-    type: "negative",
-    title: "Aluguel do apartamento",
-    amount: "R$ 1.200,00",
-    category: {
-      name: "Casa",
-      icon: "shopping-bag",
-    },
-    date: "15/04/2020",
-  },
-];
 const Dashboard = () => {
+  const [data, setData] = useState<DataListProps[]>([]);
+
+  const loadTransactions = async () => {
+    const dataKey = "@generalfinance:transactions";
+    const response = await AsyncStorage.getItem(dataKey);
+    const transactions = response ? JSON.parse(response) : [];
+
+    const transactionsFormatted: DataListProps[] = transactions.map(
+      (transaction: DataListProps) => {
+        console.log("amount-init");
+        const amount = Number(transaction.amount).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+        console.log("amount-end");
+
+        console.log("transactionsFormatted:", transactionsFormatted);
+        console.log("date-init");
+        const date = Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }).format(new Date(transaction.date));
+        console.log("date-end");
+
+        const category = transaction.category;
+
+        return { ...transaction, amount, category, date };
+      }
+    );
+
+    console.log("transactionsFormatted:", transactionsFormatted);
+
+    setData(transactionsFormatted);
+  };
+
+  useEffect(() => {
+    loadTransactions();
+  }, []);
+
   return (
     <Container>
       <Header>
