@@ -3,6 +3,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { VictoryPie } from "victory-native";
 import { RFValue } from "react-native-responsive-fontsize";
 
+import { addMonths, format, subMonths } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTheme } from "styled-components";
 
@@ -39,11 +42,20 @@ interface totalByCategoryType {
 }
 
 const Resume = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<
     totalByCategoryType[]
   >([]);
 
   const theme = useTheme();
+
+  const handleChangeDate = (action: "next" | "prev") => {
+    if (action === "next") {
+      setSelectedDate(addMonths(selectedDate, 1));
+    } else {
+      setSelectedDate(subMonths(selectedDate, 1));
+    }
+  };
 
   const loadData = async () => {
     const dataKey = "@generalfinance:transactions";
@@ -53,7 +65,10 @@ const Resume = () => {
       : [];
 
     const expensives = resposeFormated.filter(
-      (expensive) => expensive.type === "negative"
+      (expensive) =>
+        expensive.type === "negative" &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     );
 
     const expensivesTotal = expensives.reduce(
@@ -99,7 +114,7 @@ const Resume = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [selectedDate]);
 
   return (
     <Container>
@@ -115,13 +130,13 @@ const Resume = () => {
         }}
       >
         <MonthSelect>
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleChangeDate("prev")}>
             <MonthSelectIcon name="chevron-left" />
           </MonthSelectButton>
 
-          <Month>Maio</Month>
+          <Month>{format(selectedDate, "MMMM, yyyy", { locale: ptBR })}</Month>
 
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleChangeDate("next")}>
             <MonthSelectIcon name="chevron-right" />
           </MonthSelectButton>
         </MonthSelect>
