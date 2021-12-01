@@ -2,6 +2,8 @@ import React from "react";
 import { Platform } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 
+import { useAuth } from "../../hooks/auth";
+
 import SigninSocialButton from "../../components/SigninSocialButton";
 
 import AppleSVG from "../../assets/apple.svg";
@@ -19,6 +21,10 @@ import {
 } from "./styles";
 
 const Signin = () => {
+  const { user } = useAuth();
+
+  console.log("User:", user);
+
   return (
     <Container>
       <Header>
