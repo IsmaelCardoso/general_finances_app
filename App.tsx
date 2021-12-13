@@ -6,9 +6,11 @@ import React from "react";
 import { StatusBar } from "react-native";
 import AppLoading from "expo-app-loading";
 import { ThemeProvider } from "styled-components";
-
 import { NavigationContainer } from "@react-navigation/native";
+
+import { AuthProvider } from "./src/hooks/auth";
 import AppRoutes from "./src/routes/app.routes";
+import Signin from "./src/screens/Signin";
 
 import {
   useFonts,
@@ -38,7 +40,9 @@ export default function App() {
           backgroundColor="transparent"
           translucent
         />
-        <AppRoutes />
+        <AuthProvider>
+          <Signin />
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   );

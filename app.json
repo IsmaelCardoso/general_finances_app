@@ -2,9 +2,14 @@
   "expo": {
     "name": "generalfinances",
     "slug": "generalfinances",
-    "schema": "generalfinances",
+    "scheme": "generalfinances",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "io.expo.generalfinances"
+    }
   },
   "name": "generalfinances"
 }
