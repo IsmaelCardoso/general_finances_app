@@ -1,6 +1,9 @@
-import React, { createContext, ReactNode, useContext } from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 
 import * as AuthSession from "expo-auth-session";
+
+const { CLIENT_ID } = process.env;
+const { REDIRECT_URI } = process.env;
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -18,28 +21,43 @@ interface IAuthContextData {
   signinWithGoogle: () => Promise<void>;
 }
 
+interface AuthrizationResponse {
+  params: {
+    access_token: string;
+  };
+  type: string;
+}
+
 const AuthContext = createContext({} as IAuthContextData);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const user = {
-    id: "62354262",
-    name: "Ismael",
-    email: "ismael.cardosos@gmail.com",
-  };
+  const [user, setUser] = useState<IUser>({} as IUser)
 
   const signinWithGoogle = async () => {
     try {
-      const CLIENT_ID =
-        "20890507725-44mp3rc84jhtdviofgbhujsr7h7hpntb.apps.googleusercontent.com";
-      const REDIRECT_URI = "https://auth.expo.io/@ismacard/generalfinances";
       const RESPONSE_TYPE = "token";
       const SCOPE = encodeURI("profile email");
 
       const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
-      const response = await AuthSession.startAsync({ authUrl });
+      const { params, type } = await AuthSession.startAsync({ authUrl }) as AuthrizationResponse;
 
-      console.log("response:", response);
+      if (type === "success") {
+        const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`)
+        const userInfo = await response.json();
+
+        const { id, email, given_name, picture } = userInfo
+
+        setUser({
+          id,
+          email,
+          name: given_name,
+          photo: picture,
+        })
+
+        console.log("userInfo:", userInfo)
+      }
+
     } catch (error: any) {
       throw new Error(error);
     }

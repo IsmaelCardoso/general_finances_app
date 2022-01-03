@@ -27,12 +27,10 @@ const Signin = () => {
     try {
       await signinWithGoogle();
     } catch (error) {
-      console.log("Error:", error);
+      console.log(error);
       Alert.alert("Não foi possivel conectar com a conta Google");
     }
   };
-
-  console.log("User:");
 
   return (
     <Container>
@@ -57,7 +55,6 @@ const Signin = () => {
             svg={GoogleSVG}
             onPress={handlerSigninWithGoogle}
           />
-          {/* {Platform.OS === "ios" && ( */}
           <SigninSocialButton title="Entrar com Apple" svg={AppleSVG} />
         </FooterWrapper>
       </Footer>
