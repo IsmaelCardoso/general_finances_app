@@ -74,11 +74,14 @@ const Signin = () => {
             svg={GoogleSVG}
             onPress={handlerSigninWithGoogle}
           />
-          <SigninSocialButton
-            title="Entrar com Apple"
-            svg={AppleSVG}
-            onPress={handlerSigninWithApple}
-          />
+
+          {Platform.OS === "ios" && (
+            <SigninSocialButton
+              title="Entrar com Apple"
+              svg={AppleSVG}
+              onPress={handlerSigninWithApple}
+            />
+          )}
         </FooterWrapper>
 
         {isLoading && <ActivityIndicator color={theme.colors.shape} size='large' style={{ marginTop: 18 }} />}
