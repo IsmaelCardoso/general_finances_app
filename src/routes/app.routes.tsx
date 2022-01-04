@@ -9,7 +9,6 @@ import { useTheme } from "styled-components";
 import Dashboard from "../screens/Dashboard";
 import Register from "../screens/Register";
 import Resume from "../screens/Resume";
-import { reloadAsync } from "expo-updates";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 

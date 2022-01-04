@@ -5,6 +5,7 @@ import { useTheme } from "styled-components";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 import HighlightCard from "../../components/HighlightCard";
 import TransactionCard, {
@@ -52,6 +53,7 @@ const Dashboard = () => {
   );
 
   const theme = useTheme();
+  const { signOut, user } = useAuth()
 
   const getLastTransactionsDate = (
     collection: DataListProps[],
@@ -117,11 +119,10 @@ const Dashboard = () => {
       transactions,
       "negative"
     );
-    const totalInterval = `01 à ${
-      lastTrasactionEntries > lastTrasactionExpensies
-        ? lastTrasactionEntries
-        : lastTrasactionExpensies
-    }`;
+    const totalInterval = `01 à ${lastTrasactionEntries > lastTrasactionExpensies
+      ? lastTrasactionEntries
+      : lastTrasactionExpensies
+      }`;
 
     const total = entriesTotal - expensiveTotal;
     setHighlightData({
@@ -174,15 +175,15 @@ const Dashboard = () => {
               <UserInfo>
                 <Photo
                   source={{
-                    uri: "https://avatars.githubusercontent.com/u/51178683?v=4",
+                    uri: user.photo,
                   }}
                 />
                 <User>
                   <UserGreeting>Olá</UserGreeting>
-                  <UserName>Ismael Cardoso</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <IconPower name="power" />
               </LogoutButton>
             </UserWrapper>
@@ -213,8 +214,8 @@ const Dashboard = () => {
             <Title>Listagem</Title>
             <TransactionList
               data={transactions}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => <TransactionCard data={item} />}
+              keyExtractor={(item: any) => item.id}
+              renderItem={({ item }: any) => <TransactionCard data={item} />}
             />
           </Transactions>
         </>
