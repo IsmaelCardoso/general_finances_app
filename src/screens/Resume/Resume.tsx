@@ -54,6 +54,8 @@ const Resume = () => {
     totalByCategoryType[]
   >([]);
 
+  const { user } = useAuth();
+
   const theme = useTheme();
 
   const handleChangeDate = (action: "next" | "prev") => {
@@ -65,9 +67,7 @@ const Resume = () => {
   };
 
   const loadData = async () => {
-    setIsLoading(true);
-
-    const { user } = useAuth();
+    setIsLoading(false);
 
     const dataKey = `@generalfinance:transactions:user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
