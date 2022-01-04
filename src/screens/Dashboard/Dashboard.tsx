@@ -80,7 +80,7 @@ const Dashboard = () => {
     let entriesTotal = 0;
     let expensiveTotal = 0;
 
-    const dataKey = "@generalfinance:transactions";
+    const dataKey = `@generalfinance:transactions:user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 

@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from "react-native-uuid";
 
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../hooks/auth";
 import { useNavigation } from "@react-navigation/native";
 
 import InputForm from "../../components/Form/InputForm";
@@ -38,8 +39,6 @@ const schema = Yup.object().shape({
 });
 
 const Register = () => {
-  const dataKey = "@generalfinance:transactions";
-
   const [category, setCategory] = useState({
     key: "category",
     name: "Category",
@@ -47,12 +46,16 @@ const Register = () => {
   const [transactionTypeSelection, setTransactionTypeSelection] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
+  const { user } = useAuth();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
+
+  const dataKey = `@generalfinance:transactions:user:${user.id}`;
 
   const navigation = useNavigation();
 

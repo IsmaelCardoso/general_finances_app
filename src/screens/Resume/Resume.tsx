@@ -11,6 +11,7 @@ import { ptBR } from "date-fns/locale";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTheme } from "styled-components";
 
+import { useAuth } from "../../hooks/auth";
 import HistoryCard from "../../components/HistoryCard";
 
 import {
@@ -25,6 +26,8 @@ import {
   MonthSelectIcon,
   Month,
 } from "./styles";
+
+
 import { categories } from "../../utils/categories";
 
 interface TrasactionData {
@@ -63,7 +66,10 @@ const Resume = () => {
 
   const loadData = async () => {
     setIsLoading(true);
-    const dataKey = "@generalfinance:transactions";
+
+    const { user } = useAuth();
+
+    const dataKey = `@generalfinance:transactions:user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const resposeFormated: TrasactionData[] = response
       ? JSON.parse(response)
