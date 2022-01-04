@@ -59,12 +59,14 @@ const Dashboard = () => {
     collection: DataListProps[],
     type: "positive" | "negative"
   ) => {
+    const collectionFilttered = collection.filter((transaction) => transaction.type === type);
+
+    if (collectionFilttered.length === 0)
+      return 0
+
     const lastTransaction = new Date(
-      Math.max.apply(
-        Math,
-        collection
-          .filter((transaction) => transaction.type === type)
-          .map((transaction) => new Date(transaction.date).getTime())
+      Math.max.apply(Math, collectionFilttered
+        .map((transaction) => new Date(transaction.date).getTime())
       )
     );
 
@@ -119,9 +121,11 @@ const Dashboard = () => {
       transactions,
       "negative"
     );
-    const totalInterval = `01 à ${lastTrasactionEntries > lastTrasactionExpensies
-      ? lastTrasactionEntries
-      : lastTrasactionExpensies
+    const totalInterval = lastTrasactionEntries === 0 && lastTrasactionExpensies === 0 ?
+      "Não há transações" :
+      `01 à ${lastTrasactionEntries > lastTrasactionExpensies ?
+        lastTrasactionEntries :
+        lastTrasactionExpensies
       }`;
 
     const total = entriesTotal - expensiveTotal;
@@ -131,14 +135,18 @@ const Dashboard = () => {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: lastTrasactionEntries,
+        lastTransaction: lastTrasactionEntries === 0 ?
+          "Não há transações" :
+          `Última entrada dia ${lastTrasactionEntries}`,
       },
       expensives: {
         amount: expensiveTotal.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: lastTrasactionExpensies,
+        lastTransaction: lastTrasactionExpensies === 0 ?
+          "Não há transações" :
+          `Última saída ${lastTrasactionExpensies}`,
       },
       total: {
         amount: total.toLocaleString("pt-BR", {
@@ -194,13 +202,13 @@ const Dashboard = () => {
               type="up"
               title="Entradas"
               amount={highlightData?.entries?.amount}
-              lastTransaction={`Última entrada dia ${highlightData.entries.lastTransaction}`}
+              lastTransaction={highlightData.entries.lastTransaction}
             />
             <HighlightCard
               type="down"
               title="Saídas"
               amount={highlightData?.expensives?.amount}
-              lastTransaction={`Última saída ${highlightData.expensives.lastTransaction}`}
+              lastTransaction={highlightData.expensives.lastTransaction}
             />
             <HighlightCard
               type="total"

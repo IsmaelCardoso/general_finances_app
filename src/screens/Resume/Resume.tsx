@@ -75,6 +75,8 @@ const Resume = () => {
       ? JSON.parse(response)
       : [];
 
+    console.log("resposeFormated", resposeFormated)
+
     const expensives = resposeFormated.filter(
       (expensive) =>
         expensive.type === "negative" &&
