@@ -75,6 +75,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(userLogged);
         await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       } else {
+        setUser({} as IUser);
+        await AsyncStorage.removeItem(userStorageKey);
+
         return { cancelled: true };
       }
     } catch (error: any) {
@@ -110,6 +113,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
         setUser(userLogged);
         await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
+      } else {
+        setUser({} as IUser);
       }
     } catch (error: any) {
       throw new Error(error);
