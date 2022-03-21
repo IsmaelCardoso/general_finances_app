@@ -57,14 +57,17 @@ const Register = () => {
 
   const dataKey = `@generalfinance:transactions:user:${user.id}`;
 
-  // const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleTransactionTypeSelection = (type: "positive" | "negative") => {
     setTransactionTypeSelection(type);
   };
 
   const handleSelectCategoryModal = () => {
+    // ATENÇÃO: este setTimeout foi colocado para simular uma chamda asincrona nos tests
+    // setTimeout(() => {
     setCategoryModalOpen((state) => !state);
+    // }, 9000);
   };
 
   const handlerRegister = async (form: FormData) => {
@@ -77,7 +80,7 @@ const Register = () => {
     }
 
     const { name, amount } = form;
-    const newTrasaction = {
+    const newTransaction = {
       id: String(uuid.v4()),
       name,
       amount,
@@ -89,7 +92,7 @@ const Register = () => {
     try {
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
-      const dataFormatted = [newTrasaction, ...currentData];
+      const dataFormatted = [newTransaction, ...currentData];
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
 
