@@ -2,42 +2,42 @@ import styled from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 
 export const Container = styled.View`
-    flex: 1;
-    background-color: ${({ theme }) => theme.colors.background};
+  flex: 1;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const Header = styled.View`
-    background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.primary};
 
-    width: 100%;
-    height: ${RFValue(113)}px;
+  width: 100%;
+  height: ${RFValue(113)}px;
 
-    align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 19px;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 19px;
 `;
 
 export const Title = styled.Text`
-    font-family: ${({ theme }) => theme.fonts.regular};
-    font-size: ${RFValue(18)}px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${RFValue(18)}px;
 
-    color: ${({ theme }) => theme.colors.shape};
+  color: ${({ theme }) => theme.colors.shape};
 `;
 
 export const Form = styled.View`
-    flex: 1;
-    width: 100%;
+  flex: 1;
+  width: 100%;
 
-    justify-content: space-between;
+  justify-content: space-between;
 
-    padding: ${RFValue(24)}px;
+  padding: ${RFValue(24)}px;
 `;
 
 export const Fields = styled.View``;
 
 export const TransactionTypes = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-between;
 
-    padding: 8px 0 16px;
+  padding: 8px 0 16px;
 `;

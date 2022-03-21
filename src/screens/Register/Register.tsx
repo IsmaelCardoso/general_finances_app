@@ -57,7 +57,7 @@ const Register = () => {
 
   const dataKey = `@generalfinance:transactions:user:${user.id}`;
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const handleTransactionTypeSelection = (type: "positive" | "negative") => {
     setTransactionTypeSelection(type);
@@ -110,8 +110,7 @@ const Register = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await AsyncStorage.getItem(dataKey);
-      console.log(JSON.parse(data!));
+      await AsyncStorage.getItem(dataKey);
     };
 
     loadData();
@@ -166,6 +165,7 @@ const Register = () => {
             </TransactionTypes>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleSelectCategoryModal}
             />
@@ -174,7 +174,7 @@ const Register = () => {
           <Button title="Enviar" onPress={handleSubmit(handlerRegister)} />
         </Form>
 
-        <Modal visible={categoryModalOpen}>
+        <Modal testID="modal-category" visible={categoryModalOpen}>
           <CategorySelect
             category={category}
             setCategory={setCategory}
