@@ -38,6 +38,8 @@ const schema = Yup.object().shape({
     .required("Campo obrigatório"),
 });
 
+const { ASYNCSTORAGE_TRANSACTIONS } = process.env;
+
 const Register = () => {
   const [category, setCategory] = useState({
     key: "category",
@@ -55,7 +57,7 @@ const Register = () => {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
-  const dataKey = `@generalfinance:transactions:user:${user.id}`;
+  const dataKey = `${ASYNCSTORAGE_TRANSACTIONS}:${user.id}`;
 
   const navigation = useNavigation<any>();
 

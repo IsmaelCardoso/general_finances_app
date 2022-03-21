@@ -38,7 +38,7 @@ describe("Auth Hook", () => {
     expect(result.current.user.email).toBe("test@gmail.com");
   });
 
-  it("user should not connect if cancel authentication with Google", async () => {
+  it("should not connect if cancel authentication with Google", async () => {
     const googleMocked = mocked(logInAsync as any);
 
     googleMocked.mockReturnValueOnce({
@@ -52,5 +52,17 @@ describe("Auth Hook", () => {
     await act(() => result.current.signInWithGoogle());
 
     expect(result.current.user).not.toHaveProperty("id");
+  });
+
+  it("should be error with incorrectly Google parameters", async () => {
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: AuthProvider,
+    });
+
+    try {
+      await act(() => result.current.signInWithGoogle());
+    } catch (error) {
+      expect(result.current.user).toEqual({});
+    }
   });
 });

@@ -13,8 +13,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { CLIENT_ID } = process.env;
 const { REDIRECT_URI } = process.env;
-
-const userStorageKey = "@generalfinance:user";
+const { ASYNCSTORAGE_USER } = process.env;
+const { ANDROIDCLIENTID } = process.env;
+const { IOSCLIENTID } = process.env;
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -57,10 +58,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const signInWithGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId:
-          "641965101955-ch937c168att73q84sl4ep58nocd18th.apps.googleusercontent.com",
-        iosClientId:
-          "641965101955-s5mupk6aj7vcdd52f7j33vivkjdapi0n.apps.googleusercontent.com",
+        androidClientId: ANDROIDCLIENTID,
+        iosClientId: IOSCLIENTID,
         scopes: ["profile", "email"],
       });
 
@@ -73,10 +72,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
+        await AsyncStorage.setItem(
+          ASYNCSTORAGE_USER!,
+          JSON.stringify(userLogged)
+        );
       } else {
         setUser({} as IUser);
-        await AsyncStorage.removeItem(userStorageKey);
+        await AsyncStorage.removeItem(ASYNCSTORAGE_USER!);
 
         return { cancelled: true };
       }
@@ -112,7 +114,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
+        await AsyncStorage.setItem(
+          ASYNCSTORAGE_USER!,
+          JSON.stringify(userLogged)
+        );
       } else {
         setUser({} as IUser);
       }
@@ -144,7 +149,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
+        await AsyncStorage.setItem(
+          ASYNCSTORAGE_USER!,
+          JSON.stringify(userLogged)
+        );
       }
     } catch (error: any) {
       throw new Error(error);
@@ -153,17 +161,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async () => {
     setUser({} as IUser);
-    await AsyncStorage.removeItem(userStorageKey);
+    await AsyncStorage.removeItem(ASYNCSTORAGE_USER!);
   };
 
   useEffect(() => {
     async function loadUserStorageData() {
-      const userStorage = await AsyncStorage.getItem(userStorageKey);
+      const userStorage = await AsyncStorage.getItem(ASYNCSTORAGE_USER!);
 
       if (userStorage) {
-        const userLoggerd = JSON.parse(userStorage) as IUser;
+        const userLogged = JSON.parse(userStorage) as IUser;
 
-        setUser(userLoggerd);
+        setUser(userLogged);
         setUserStorageLoading(false);
       }
     }

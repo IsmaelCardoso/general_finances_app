@@ -12,6 +12,8 @@ import TransactionCard, {
   TrasactionCardProps,
 } from "../../components/Transactions/TransactionCard";
 
+const { ASYNCSTORAGE_TRANSACTIONS } = process.env;
+
 import {
   Container,
   Header,
@@ -53,20 +55,24 @@ const Dashboard = () => {
   );
 
   const theme = useTheme();
-  const { signOut, user } = useAuth()
+  const { signOut, user } = useAuth();
 
   const getLastTransactionsDate = (
     collection: DataListProps[],
     type: "positive" | "negative"
   ) => {
-    const collectionFilttered = collection.filter((transaction) => transaction.type === type);
+    const collectionFilttered = collection.filter(
+      (transaction) => transaction.type === type
+    );
 
-    if (collectionFilttered.length === 0)
-      return 0
+    if (collectionFilttered.length === 0) return 0;
 
     const lastTransaction = new Date(
-      Math.max.apply(Math, collectionFilttered
-        .map((transaction) => new Date(transaction.date).getTime())
+      Math.max.apply(
+        Math,
+        collectionFilttered.map((transaction) =>
+          new Date(transaction.date).getTime()
+        )
       )
     );
 
@@ -82,7 +88,7 @@ const Dashboard = () => {
     let entriesTotal = 0;
     let expensiveTotal = 0;
 
-    const dataKey = `@generalfinance:transactions:user:${user.id}`;
+    const dataKey = `${ASYNCSTORAGE_TRANSACTIONS}:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const transactions = response ? JSON.parse(response) : [];
 
@@ -121,12 +127,14 @@ const Dashboard = () => {
       transactions,
       "negative"
     );
-    const totalInterval = lastTrasactionEntries === 0 && lastTrasactionExpensies === 0 ?
-      "Não há transações" :
-      `01 à ${lastTrasactionEntries > lastTrasactionExpensies ?
-        lastTrasactionEntries :
-        lastTrasactionExpensies
-      }`;
+    const totalInterval =
+      lastTrasactionEntries === 0 && lastTrasactionExpensies === 0
+        ? "Não há transações"
+        : `01 à ${
+            lastTrasactionEntries > lastTrasactionExpensies
+              ? lastTrasactionEntries
+              : lastTrasactionExpensies
+          }`;
 
     const total = entriesTotal - expensiveTotal;
     setHighlightData({
@@ -135,18 +143,20 @@ const Dashboard = () => {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: lastTrasactionEntries === 0 ?
-          "Não há transações" :
-          `Última entrada dia ${lastTrasactionEntries}`,
+        lastTransaction:
+          lastTrasactionEntries === 0
+            ? "Não há transações"
+            : `Última entrada dia ${lastTrasactionEntries}`,
       },
       expensives: {
         amount: expensiveTotal.toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
         }),
-        lastTransaction: lastTrasactionExpensies === 0 ?
-          "Não há transações" :
-          `Última saída ${lastTrasactionExpensies}`,
+        lastTransaction:
+          lastTrasactionExpensies === 0
+            ? "Não há transações"
+            : `Última saída ${lastTrasactionExpensies}`,
       },
       total: {
         amount: total.toLocaleString("pt-BR", {

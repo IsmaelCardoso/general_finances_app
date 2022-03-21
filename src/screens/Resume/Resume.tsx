@@ -27,7 +27,6 @@ import {
   Month,
 } from "./styles";
 
-
 import { categories } from "../../utils/categories";
 
 interface TrasactionData {
@@ -46,6 +45,8 @@ interface totalByCategoryType {
   color: string;
   percent: string;
 }
+
+const { ASYNCSTORAGE_TRANSACTIONS } = process.env;
 
 const Resume = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -69,13 +70,13 @@ const Resume = () => {
   const loadData = async () => {
     setIsLoading(false);
 
-    const dataKey = `@generalfinance:transactions:user:${user.id}`;
+    const dataKey = `${ASYNCSTORAGE_TRANSACTIONS}:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const resposeFormated: TrasactionData[] = response
       ? JSON.parse(response)
       : [];
 
-    console.log("resposeFormated", resposeFormated)
+    console.log("resposeFormated", resposeFormated);
 
     const expensives = resposeFormated.filter(
       (expensive) =>
